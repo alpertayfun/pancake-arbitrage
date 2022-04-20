@@ -15,26 +15,22 @@ const wbnbTokenAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 const racaTokenAddress = "0x12bb890508c125661e03b09ec06e404bc9289040";
 const pancakeRouterAddress = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 
-const tokens = [
+const tokens = 
   {
     BUSD: {
       name: 'BUSD',
       address: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'
-    }
-  },
-  {
+    },
     WBNB: {
       name: 'WBNB',
       address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
-    }
-  },
-  {
+    },
     RACA: {
       name: 'RACA',
       address: '0x12bb890508c125661e03b09ec06e404bc9289040'
     }
   }
-];
+;
 
 const init = async () => {
   const pancakeSwap = new web3.eth.Contract(
@@ -46,23 +42,23 @@ const init = async () => {
     .on('data', async block => {
       const exchangeAmount = await new BigNumber(1);
       const shiftedExchangeAmount = await new BigNumber(exchangeAmount).shiftedBy(18);
-      const [inputToken, outputToken] = await Promise.all( [tokens.BUSD, tokens.WBNB].map(tokenAddress => ( new Token(ChainId.MAINNET,tokenAddress,18))));
+      // const [inputToken, outputToken] = await Promise.all( [tokens.BUSD.address, tokens.WBNB.address].map(tokenAddress => ( new Token(ChainId.MAINNET,tokenAddress,18))));
 
-      const pair = await Fetcher.fetchPairData(inputToken, outputToken, provider);
-      console.log("pair >>>>>>>>>>>>>>>>");
-      console.log(inputToken);
-      console.log(outputToken);
-      console.log("pair >>>>>>>>>>>>>>>>");
+      // const pair = await Fetcher.fetchPairData(inputToken, outputToken, provider);
+      // console.log("pair >>>>>>>>>>>>>>>>");
+      // console.log(inputToken);
+      // console.log(outputToken);
+      // console.log("pair >>>>>>>>>>>>>>>>");
 
       //const shiftedPancakeValue = await new BigNumber(bakeOutput[1]).shiftedBy(-18);
 
-      const bakeOutput = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.BUSD, tokens.WBNB]).call();
+      const bakeOutput = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.BUSD.address, tokens.WBNB.address]).call();
       console.log(`PancakeSwap BUSD-WBNB: ${web3.utils.fromWei(shiftedExchangeAmount.toString())} -> ${web3.utils.fromWei(bakeOutput[1].toString())}`);
 
-      const bakeOutput2 = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.WBNB, tokens.RACA]).call();
+      const bakeOutput2 = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.WBNB.address, tokens.RACA.address]).call();
       console.log(`PancakeSwap WBNB-RACA: ${web3.utils.fromWei(shiftedExchangeAmount.toString())} -> ${web3.utils.fromWei(bakeOutput2[1].toString())}`);
       
-      const bakeOutput3 = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.RACA, tokens.BUSD]).call();
+      const bakeOutput3 = await pancakeSwap.methods.getAmountsOut(shiftedExchangeAmount, [tokens.RACA.address, tokens.BUSD.address]).call();
       console.log(`PancakeSwap RACA-BUSD: ${web3.utils.fromWei(shiftedExchangeAmount.toString())} -> ${web3.utils.fromWei(bakeOutput3[1].toString())}`);
 
     })
