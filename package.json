@@ -9,7 +9,10 @@
   "author": "alper tayfun",
   "license": "ISC",
   "dependencies": {
+    "@ethersproject/providers": "^5.6.4",
+    "@pancakeswap-libs/sdk": "^1.0.1",
     "bignumber.js": "^9.0.2",
+    "ethers": "^5.6.4",
     "web3": "^1.7.3"
   }
 }
